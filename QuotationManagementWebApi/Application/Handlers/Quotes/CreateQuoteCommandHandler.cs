@@ -8,10 +8,14 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
     public class CreateQuoteCommandHandler
     {
         private readonly IQuotationService _quotationService;
+        private readonly GetQuoteAnalyticsQueryHandler _analyticsHandler;
 
-        public CreateQuoteCommandHandler(IQuotationService quotationService)
+        public CreateQuoteCommandHandler(
+            IQuotationService quotationService,
+            GetQuoteAnalyticsQueryHandler analyticsHandler)
         {
             _quotationService = quotationService;
+            _analyticsHandler = analyticsHandler;
         }
 
         public async Task<CreateQuotationResponse> HandleAsync(CreateQuoteCommand command)
@@ -36,6 +40,7 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
             };
 
             var quoteId = await _quotationService.CreateQuotationAsync(quotation);
+            await _analyticsHandler.InvalidateCacheAsync();
 
             return new CreateQuotationResponse
             {

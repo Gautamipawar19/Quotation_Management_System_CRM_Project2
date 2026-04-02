@@ -7,10 +7,14 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
     public class UpdateQuoteCommandHandler
     {
         private readonly IQuotationService _quotationService;
+        private readonly GetQuoteAnalyticsQueryHandler _analyticsHandler;
 
-        public UpdateQuoteCommandHandler(IQuotationService quotationService)
+        public UpdateQuoteCommandHandler(
+            IQuotationService quotationService,
+            GetQuoteAnalyticsQueryHandler analyticsHandler)
         {
             _quotationService = quotationService;
+            _analyticsHandler = analyticsHandler;
         }
 
         public async Task HandleAsync(UpdateQuoteCommand command)
@@ -35,6 +39,7 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
             };
 
             await _quotationService.UpdateQuotationAsync(command.QuoteId, quotation);
+            await _analyticsHandler.InvalidateCacheAsync();
         }
     }
 }

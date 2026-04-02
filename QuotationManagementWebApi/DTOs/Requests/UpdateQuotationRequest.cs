@@ -21,7 +21,7 @@ namespace QuotationManagementWebApi.DTOs.Requests
         [MaxLength(100)]
         public string CreatedBy { get; set; } = string.Empty;
 
-        [MinLength(1)]
+        [MinLength(1, ErrorMessage = "At least one line item is required.")]
         public List<CreateQuotationLineItemRequest> LineItems { get; set; } = new();
     }
 }

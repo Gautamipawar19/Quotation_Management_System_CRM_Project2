@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "2gE2mwCRHUgGNq3sr/Gr83UHyH6xwuna5CCb4kXic1Y=",
-  "Source": "QuotationManagementWebApi",
-  "BasePath": "_content/QuotationManagementWebApi",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"bOsYXJ3XFYkw5QAgPSN1nz3fnSmiFmNwMt06cJDS/20=","Source":"QuotationManagementWebApi","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
