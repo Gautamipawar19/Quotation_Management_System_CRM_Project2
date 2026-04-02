@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\project2\\Quotation-Management-System_Project 2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\QuotationManagementProject\\Quotation_Management_System_CRM_Project2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj": {}
   },
   "projects": {
-    "D:\\project2\\Quotation-Management-System_Project 2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\QuotationManagementProject\\Quotation_Management_System_CRM_Project2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\project2\\Quotation-Management-System_Project 2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\QuotationManagementProject\\Quotation_Management_System_CRM_Project2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj",
         "projectName": "QuotationManagementWebApi",
-        "projectPath": "D:\\project2\\Quotation-Management-System_Project 2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj",
-        "packagesPath": "C:\\Users\\saksh\\.nuget\\packages\\",
-        "outputPath": "D:\\project2\\Quotation-Management-System_Project 2\\QuotationManagementWebApi\\obj\\",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\QuotationManagementProject\\Quotation_Management_System_CRM_Project2\\QuotationManagementWebApi\\QuotationManagementWebApi.csproj",
+        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\QuotationManagementProject\\Quotation_Management_System_CRM_Project2\\QuotationManagementWebApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\saksh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -41,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -75,6 +72,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -99,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.417/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

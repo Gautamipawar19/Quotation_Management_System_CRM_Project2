@@ -11,6 +11,7 @@ using QuotationManagementWebApi.Services.Interfaces;
 using System.Text;
 using System.Text.Json.Serialization;
 using QuotationManagementWebApi.Application.Handlers.Quotes;
+using QuotationManagementWebApi.DataSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,12 @@ builder.Services.AddScoped<CreateQuoteCommandHandler>();
 builder.Services.AddScoped<UpdateQuoteCommandHandler>();
 builder.Services.AddScoped<DeleteQuoteCommandHandler>();
 builder.Services.AddScoped<ChangeQuoteStatusCommandHandler>();
+builder.Services.AddScoped<GetQuoteAnalyticsQueryHandler>();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+});
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
 
@@ -107,6 +114,12 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<QuotationDbContext>();
+    await DbSeeder.SeedAsync(dbContext);
+}
 
 if (app.Environment.IsDevelopment())
 {
