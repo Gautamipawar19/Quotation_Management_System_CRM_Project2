@@ -16,21 +16,22 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
 
         public async Task<List<QuotationSummaryResponse>> HandleAsync(GetAllQuotesQuery query)
         {
-            return await _context.Quotations
+            var quotations = await _context.Quotations
                 .AsNoTracking()
                 .OrderByDescending(q => q.CreatedDate)
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Take(query.PageSize)
-                .Select(q => new QuotationSummaryResponse
-                {
-                    QuoteId = q.QuoteId,
-                    QuoteNumber = q.QuoteNumber,
-                    Status = q.Status,
-                    GrandTotal = q.GrandTotal,
-                    CreatedBy = q.CreatedBy,
-                    CreatedDate = q.CreatedDate
-                })
                 .ToListAsync();
+
+            return quotations.Select(q => new QuotationSummaryResponse
+            {
+                QuoteId = q.QuoteId,
+                QuoteNumber = q.QuoteNumber,
+                Status = q.Status.ToString(),
+                GrandTotal = q.GrandTotal,
+                CreatedBy = q.CreatedBy,
+                CreatedDate = q.CreatedDate.ToString("yyyy-MM-dd")
+            }).ToList();
         }
     }
 }

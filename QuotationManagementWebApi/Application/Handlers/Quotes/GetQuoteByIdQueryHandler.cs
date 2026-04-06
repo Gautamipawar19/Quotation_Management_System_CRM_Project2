@@ -16,36 +16,40 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
 
         public async Task<QuotationResponse?> HandleAsync(GetQuoteByIdQuery query)
         {
-            return await _context.Quotations
+            var q = await _context.Quotations
                 .AsNoTracking()
-                .Where(q => q.QuoteId == query.QuoteId)
-                .Select(q => new QuotationResponse
+                .Include(x => x.LineItems)
+                .FirstOrDefaultAsync(x => x.QuoteId == query.QuoteId);
+
+            if (q == null)
+                return null;
+
+            return new QuotationResponse
+            {
+                QuoteId = q.QuoteId,
+                QuoteNumber = q.QuoteNumber,
+                LeadId = q.LeadId,
+                CustomerId = q.CustomerId,
+                QuoteDate = q.QuoteDate.ToString("yyyy-MM-dd"),
+                ExpiryDate = q.ExpiryDate.ToString("yyyy-MM-dd"),
+                Status = q.Status.ToString(),
+                SubTotal = q.SubTotal,
+                TaxAmount = q.TaxAmount,
+                DiscountAmount = q.DiscountAmount,
+                GrandTotal = q.GrandTotal,
+                CreatedBy = q.CreatedBy,
+                CreatedDate = q.CreatedDate.ToString("yyyy-MM-dd"),
+                RevisionNumber = q.RevisionNumber,
+                LineItems = q.LineItems.Select(li => new QuotationLineItemResponse
                 {
-                    QuoteId = q.QuoteId,
-                    QuoteNumber = q.QuoteNumber,
-                    LeadId = q.LeadId,
-                    CustomerId = q.CustomerId,
-                    QuoteDate = q.QuoteDate,
-                    ExpiryDate = q.ExpiryDate,
-                    Status = q.Status,
-                    SubTotal = q.SubTotal,
-                    TaxAmount = q.TaxAmount,
-                    DiscountAmount = q.DiscountAmount,
-                    GrandTotal = q.GrandTotal,
-                    CreatedBy = q.CreatedBy,
-                    CreatedDate = q.CreatedDate,
-                    RevisionNumber = q.RevisionNumber,
-                    LineItems = q.LineItems.Select(li => new QuotationLineItemResponse
-                    {
-                        LineItemId = li.LineItemId,
-                        ItemDescription = li.ItemDescription,
-                        Quantity = li.Quantity,
-                        UnitPrice = li.UnitPrice,
-                        Discount = li.Discount,
-                        LineTotal = li.LineTotal
-                    }).ToList()
-                })
-                .FirstOrDefaultAsync();
+                    LineItemId = li.LineItemId,
+                    ItemDescription = li.ItemDescription,
+                    Quantity = li.Quantity,
+                    UnitPrice = li.UnitPrice,
+                    Discount = li.Discount,
+                    LineTotal = li.LineTotal
+                }).ToList()
+            };
         }
     }
 }

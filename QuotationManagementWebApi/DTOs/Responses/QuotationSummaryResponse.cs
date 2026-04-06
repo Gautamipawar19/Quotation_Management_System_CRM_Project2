@@ -6,9 +6,11 @@ namespace QuotationManagementWebApi.DTOs.Responses
     {
         public int QuoteId { get; set; }
         public string QuoteNumber { get; set; } = string.Empty;
-        public QuoteStatus Status { get; set; }
+        public int? LeadId { get; set; }
+        public int? CustomerId { get; set; }
+        public string Status { get; set; }
         public decimal GrandTotal { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
-        public DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
     }
 }

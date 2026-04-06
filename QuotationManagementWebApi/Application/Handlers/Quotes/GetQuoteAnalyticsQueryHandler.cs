@@ -27,12 +27,19 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
 
         public async Task<QuoteAnalyticsResponse> HandleAsync(GetQuoteAnalyticsQuery query)
         {
-            var cachedData = await _cache.GetStringAsync(CacheKey);
-
-            if (!string.IsNullOrWhiteSpace(cachedData))
+            try
             {
-                _logger.LogInformation("Returning analytics from Redis cache.");
-                return JsonSerializer.Deserialize<QuoteAnalyticsResponse>(cachedData)!;
+                var cachedData = await _cache.GetStringAsync(CacheKey);
+
+                if (!string.IsNullOrWhiteSpace(cachedData))
+                {
+                    _logger.LogInformation("Returning analytics from Redis cache.");
+                    return JsonSerializer.Deserialize<QuoteAnalyticsResponse>(cachedData)!;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis read failed. Fetching analytics from database.");
             }
 
             _logger.LogInformation("Fetching analytics from database.");
@@ -67,23 +74,39 @@ namespace QuotationManagementWebApi.Application.Handlers.Quotes
                 AverageQuoteValue = averageQuoteValue
             };
 
-            var cacheOptions = new DistributedCacheEntryOptions
+            try
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-            };
+                var cacheOptions = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                };
 
-            await _cache.SetStringAsync(
-                CacheKey,
-                JsonSerializer.Serialize(response),
-                cacheOptions);
+                await _cache.SetStringAsync(
+                    CacheKey,
+                    JsonSerializer.Serialize(response),
+                    cacheOptions);
+
+                _logger.LogInformation("Analytics cached successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis write failed. Returning database analytics without cache.");
+            }
 
             return response;
         }
 
         public async Task InvalidateCacheAsync()
         {
-            await _cache.RemoveAsync(CacheKey);
-            _logger.LogInformation("Quote analytics cache invalidated.");
+            try
+            {
+                await _cache.RemoveAsync(CacheKey);
+                _logger.LogInformation("Quote analytics cache invalidated.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis cache invalidation failed.");
+            }
         }
     }
 }
