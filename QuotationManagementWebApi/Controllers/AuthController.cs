@@ -26,6 +26,17 @@ namespace QuotationManagementWebApi.Controllers
                 var token = _authService.GenerateToken("sakshi", "SalesRep");
                 return Ok(new { token });
             }
+            if (request.Username == "gauri" && request.Password == "123")
+            {
+                var token = _authService.GenerateToken("gauri", "SalesRep");
+                return Ok(new { token });
+            }
+
+            if (request.Username == "gautami" && request.Password == "123")
+            {
+                var token = _authService.GenerateToken("gautami", "SalesRep");
+                return Ok(new { token });
+            }
 
             if (request.Username == "manager" && request.Password == "123")
             {

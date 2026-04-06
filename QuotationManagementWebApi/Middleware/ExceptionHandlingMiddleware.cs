@@ -22,26 +22,25 @@ namespace QuotationManagementWebApi.Middleware
             {
                 await _next(context);
             }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Validation error occurred.");
+                await WriteErrorResponse(context, HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Business rule error occurred.");
+                await WriteErrorResponse(context, HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogWarning(ex, "Resource not found.");
                 await WriteErrorResponse(context, HttpStatusCode.NotFound, ex.Message);
             }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "Validation failed.");
-                await WriteErrorResponse(context, HttpStatusCode.BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                _logger.LogWarning(ex, "Business rule violation.");
-                await WriteErrorResponse(context, HttpStatusCode.BadRequest, ex.Message);
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled exception occurred.");
-                await WriteErrorResponse(context, HttpStatusCode.InternalServerError,
-                    "An unexpected error occurred.");
+                await WriteErrorResponse(context, HttpStatusCode.InternalServerError, "An unexpected error occurred.");
             }
         }
 
@@ -55,8 +54,8 @@ namespace QuotationManagementWebApi.Middleware
 
             var response = new
             {
-                statusCode = context.Response.StatusCode,
-                message
+                success = false,
+                message = message
             };
 
             var json = JsonSerializer.Serialize(response);
